@@ -1,0 +1,25 @@
+package Formulario;
+
+import clases.*;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+public class Main {
+
+    public static Controlador control;
+    public static ResultSet rs;
+    public static int res;
+
+    public static void main(String[] args) {
+        try {
+            control = new Controlador();
+            control.crearConexion();
+
+        } catch (SQLException ex) {
+            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }
+}
