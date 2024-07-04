@@ -1,0 +1,66 @@
+
+package clases;
+
+import java.sql.*;
+import javax.swing.JOptionPane;
+
+
+
+
+public class ConexionBD {
+    
+    private Connection conn;
+    private Statement sentencia;
+    
+    private final String controlador;
+    private final String nombreBD;
+    private final String usuarioBD;
+    private final String claveBD;
+    
+    
+    public ConexionBD(){
+     this.controlador="sun.jdbc.odbc.JdbcOdbcDriver";
+                     //C:\Users\nicol\OneDrive\Escritorio\ComidaRapidaApp\ComidaRapida_APP-main\ComidaRapida_APP\BD
+     this.nombreBD= "C:\\Users\\nicol\\OneDrive\\Escritorio\\ComidaRapidaApp\\ComidaRapida_APP-main\\ComidaRapida_APP\\BD\\bd.accdb"; // Hay que colocar la ruta de la base de datos con su .accdb de Access
+     this.usuarioBD="";
+     this.claveBD="";
+    }
+    
+    public boolean establecerConexion() throws SQLException{
+        
+        //primer try
+    
+        try{
+             conn=DriverManager.getConnection("jdbc:ucanaccess://"+this.nombreBD,this.usuarioBD,this.claveBD);
+        }
+        catch (SQLException e){
+               JOptionPane.showMessageDialog(null,"Error al realizar la conexión "+e);
+          return false;
+}          
+        //segundo try
+    
+        try{
+               this.sentencia=this.conn.createStatement(
+               ResultSet.TYPE_SCROLL_INSENSITIVE,
+               ResultSet.CONCUR_READ_ONLY);}catch (SQLException e){
+               JOptionPane.showMessageDialog(null,"Error al crear el objeto sentencia "+ e);
+                return false;
+             }
+              return true;
+    
+    }
+    
+    // Creamos el método ejecutarSentenciaQuery y ejecutarSentenciaSql:
+                
+              public ResultSet ejecutaSentenciaQuery(String sql) throws SQLException{
+              ResultSet rs;
+              rs=this.sentencia.executeQuery(sql);
+              return rs;
+}
+              public int ejecutaSentenciaSql(String sql) throws SQLException{
+              int res;
+              res=this.sentencia.executeUpdate(sql);
+              return res;
+}
+    
+}
