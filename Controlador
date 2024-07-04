@@ -1,0 +1,45 @@
+package clases;
+
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
+
+public class Controlador {
+
+//Declaramos un atributo:
+    private final ConexionBD con;
+
+    //Método constructor:
+    public Controlador() {
+        this.con = new ConexionBD();
+    }
+
+    //Método crearConexion (debajo del método “public Controlador”):
+    public void crearConexion() throws SQLException {
+        this.con.establecerConexion();
+    }
+
+    // Creamos los métodos mandarQUERY y mandarSQL:
+    public ResultSet mandarQUERY(String sql) throws SQLException {
+        ResultSet aux_result = this.con.ejecutaSentenciaQuery(sql);
+        return aux_result;
+    }
+
+    public int mandarSQL(String sql) throws SQLException {
+        int aux = this.con.ejecutaSentenciaSql(sql);
+        return aux;
+    }
+    
+    public List<String> obtenerNombresMenus() throws SQLException {
+        List<String> nombresMenus = new ArrayList<>();
+        String sqlProducto1 = "SELECT nombre_menu FROM menu WHERE id_menu = 1";
+        ResultSet rs = this.mandarQUERY(sqlProducto1);
+        while (rs.next()) {
+            nombresMenus.add(rs.getString("nombre_menu"));
+        }
+        return nombresMenus;
+    }
+
+}
